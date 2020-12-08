@@ -1,8 +1,8 @@
 #include "server.hpp"
 
-server::Server::Server(void* data, int port)
+server::Server::Server(int port)
 {
-    setup(data, port);
+    setup(port);
 }
 
 server::Server::Server(const Server& orig)
@@ -15,8 +15,7 @@ server::Server::~Server()
 	close(_listenFd);
 }
 
-void server::Server::setup(void* data, int port){
-    _data = data;
+void server::Server::setup(int port){
 	//std::cout << "Called setup(data, port)\n";
 	//std::cout << htons(port);
 	_listenFd = socket(AF_INET, SOCK_STREAM, 0);
@@ -61,8 +60,8 @@ void server::Server::handleNewConnection(){
 	//std::cout << "Called handleNewConnection\n";
 	socklen_t clientSize = htons(sizeof(_clientAddr));
 	_connFd = accept(_listenFd, (struct sockaddr*) &_clientAddr, &clientSize);
-	std::cout << "Called accept\n";
-	newConnectionCallback(this, _connFd, _data);
+	//std::cout << "Called accept\n";
+	newConnectionCallback(this, _connFd);
 }
 
 void server::Server::loop(){
@@ -78,11 +77,11 @@ void server::Server::init(){
     startListen();
 }
 
-void server::Server::onConnect(void(*ncc)(Server*, uint16_t, void*)){
+void server::Server::onConnect(void(*ncc)(Server*, uint16_t)){
     newConnectionCallback = ncc;
 }
 
-int server::Server::sendBytes(uint16_t fd, char *msg, int count){
+/*int server::Server::sendBytes(uint16_t fd, char *msg, int count){
 	//cout << "Called SendBytes" << endl;
 	int bytesSent = send(fd, msg, count, 0);
 	if(bytesSent < 0){
@@ -99,4 +98,4 @@ int server::Server::readBytes(uint16_t fd, char* buffer,
 		std::cout << "read() has failed\n";
 	}
     return bytesRead;
-}
+}*/

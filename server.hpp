@@ -17,7 +17,7 @@ namespace server{
 
     class Server{
     public:
-        Server(void* data, int port);
+        Server(int port);
         Server(const Server& orig);
         virtual ~Server();
         
@@ -26,17 +26,15 @@ namespace server{
         void loop();
 
         //callback setters
-        void onConnect(void (*ncc)(Server* server, uint16_t fd, void* data));
+        void onConnect(void (*ncc)(Server* server, uint16_t fd));
 
     private:
-
-        void* _data;
         int _listenFd;
         int _connFd;
         struct sockaddr_storage _clientAddr;
         struct sockaddr_in _servAddr;
-        void (*newConnectionCallback) (Server* server, uint16_t fd, void*);
-        void setup(void* data, int port);
+        void (*newConnectionCallback) (Server* server, uint16_t fd);
+        void setup(int port);
         void initializeSocket();
         void bindSocket();
         void startListen();

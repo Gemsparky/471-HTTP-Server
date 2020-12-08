@@ -1,14 +1,19 @@
 #include "server_handler.hpp"
 
-void server::OnNewClientConnected(server::Server* s, uint16_t fd,
-		void* data){
-	cout << "New Connection" << endl;
+void server::OnNewClientConnected(server::Server* s, uint16_t fd){
+	std::cout << "New Connection" << std::endl;
 	char* requestBytes = new char[8192];
 	int count = readBytes(fd, requestBytes, 8192);
+	for(int i = 0; i < count; i++){
+		std::cout << requestBytes[i];
+	}
 	server::Request* req = new server::Request(requestBytes, count);
 	server::Response* res = new server::Response(req);
 	int responseSize = res->getBytesCount();
 	char* responseText = res->toBytes();
+	for(int i = 0; i < responseSize; i++){
+		std::cout << responseText[i];
+	}
 	count = sendBytes(fd, responseText, responseSize);
 }
 

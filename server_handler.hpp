@@ -7,7 +7,9 @@
 #include "server.hpp"
 
 namespace server{
-	void OnNewClientConnected(net::Server* server, uint16_t fd, void* data);
+	void OnNewClientConnected(server::Server* s, uint16_t fd);
 	int sendBytes(uint16_t fd, char *messageBuffer, int count);
 	int readBytes(uint16_t fd, char* buffer, unsigned int n);
 }
+
+#endif

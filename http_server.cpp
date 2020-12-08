@@ -14,22 +14,22 @@ void parseCommandLine(int argc, char** argv, int* port) {
             case '?':
             default:
                 *port = -1;
-                showHelp(argv[0], "");
+                //showHelp(argv[0], "");
                 break;
         }
     }
 }
 
 int main(int argc, char** argv) {
-    int port = 0;
-    parseCommandLine(argc, argv, &port);
-    if (port == -1) {
+    int port = 9090;
+    //parseCommandLine(argc, argv, &port);
+    /*if (port == -1) {
         return 1;
     }
     if (port == 0) {
         port = 80;
-    }
-    server::Server* s = new server::Server((void*)&sm, port);
+    }*/
+    server::Server* s = new server::Server(port);
     s->onConnect(server::OnNewClientConnected);
     s->init();
     s->loop();
