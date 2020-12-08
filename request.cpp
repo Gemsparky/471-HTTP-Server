@@ -1,11 +1,13 @@
 #include "request.hpp"
 
+server::Request::Request(){}
+
 server::Request::Request(const char* msg, int size){
 	//convert char array to string
 	std::string str(msg, size);
 	//break header into lines
 	//vector<char*> lines = new vector<char*>;
-	vector<std::string> lines/* = new vector<std::string>*/;
+	std::vector<std::string> lines/* = new vector<std::string>*/;
 	std::istringstream input(str);
 	std::string line;
 	while(std::getline(input, line)){
@@ -29,10 +31,10 @@ server::Request::Request(const char* msg, int size){
 	//decode into the fields
 	//std::string requestLine = lines[0];
 	//TODO: Make sure carriage return is discarded if present
-	vector<std::string> words;
+	std::vector<std::string> words;
 	std::istringstream requestLine(lines[0]);
 	std::string word;
-	while(std::getline(requestLine, word, " ")){
+	while(std::getline(requestLine, word, ' ')){
 		words.push_back(word);
 	}
 	_method = words[0];

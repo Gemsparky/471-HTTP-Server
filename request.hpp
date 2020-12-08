@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <sstream>
 
 namespace server{
 
@@ -16,7 +18,8 @@ namespace server{
 	
 	class Request{
 	public:
-		Request(const char* msg); //Since we are only building the server, we only need the constructor for bytes -> request object
+		Request();
+		Request(const char* msg, int size); //Since we are only building the server, we only need the constructor for bytes -> request object
 		Request(const Request& original);
 		virtual ~Request();
 		std::string getMethod();
@@ -27,5 +30,7 @@ namespace server{
 		std::string _method;
 		std::string _uri;
 		std::string _version;
-	}
+	};
 }
+
+#endif
