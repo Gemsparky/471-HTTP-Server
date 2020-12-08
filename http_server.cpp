@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include <getopt.h>
+#include "server_handler.hpp"
 
-void
-parseCommandLine(int argc, char** argv, int* port) {
+void parseCommandLine(int argc, char** argv, int* port) {
     int optionIndex = 0;
     while((optionIndex = getopt(argc, argv, ":p:")) != -1) {
         switch(optionIndex) {
@@ -23,17 +23,14 @@ parseCommandLine(int argc, char** argv, int* port) {
 int main(int argc, char** argv) {
     int port = 0;
     parseCommandLine(argc, argv, &port);
-    
     if (port == -1) {
         return 1;
     }
-
     if (port == 0) {
-        port = DEFAULT_PORT;
+        port = 80;
     }
-
-    net::Server* s = new net::Server((void*)&sm, port);
-    s->onConnect(net::OnNewClientConnected);
+    server::Server* s = new server::Server((void*)&sm, port);
+    s->onConnect(server::OnNewClientConnected);
     s->init();
     s->loop();
 }
