@@ -46,7 +46,7 @@ void server::Server::bindSocket(){
 // Listen to incoming connections
 void server::Server::startListen(){
 	//std::cout << "Called startListen\n";
-	int res = listen(_listenFd, 1); //Maybe ask about backlog size
+	int res = listen(_listenFd, 3); //Maybe ask about backlog size
 }
 
 // Close the listening socket
@@ -69,6 +69,10 @@ void server::Server::loop(){
 	while(true){
 		handleNewConnection();
 	}
+}
+
+void server::Server::disconnect(){
+	int res = close(_connFd);
 }
 
 void server::Server::init(){

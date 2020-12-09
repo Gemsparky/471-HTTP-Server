@@ -15,6 +15,7 @@ void server::OnNewClientConnected(server::Server* s, uint16_t fd){
 		std::cout << responseText[i];
 	}
 	count = sendBytes(fd, responseText, responseSize);
+	s->disconnect();
 }
 
 int server::sendBytes(uint16_t fd, char *msg, int count){

@@ -22,6 +22,7 @@ namespace server{
         virtual ~Server();
         
         void shutdown();
+		void disconnect();
         void init();
         void loop();
 
