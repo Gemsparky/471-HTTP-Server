@@ -7,6 +7,7 @@ server::Response::Response(Request* req){
 	if(req->getMethod().compare("GET") == 0){
 		handleGet();
 	}else{
+		//Send "501 Not Implemented"
 		handleOther();
 	}
 }
@@ -14,6 +15,7 @@ server::Response::Response(Request* req){
 server::Response::~Response(){}
 
 void server::Response::handleGet(){
+	//Read file contents into string
 	std::string filename = _req->getURI();
 	filename.erase(std::remove(filename.begin(), filename.end(), '/'),
 			filename.end());
@@ -26,6 +28,7 @@ void server::Response::handleGet(){
 		_responseBody = responseBody;
 		_status = 200;
 	}else{
+		//If file is not found
 		_status = 404;
 		_responseBody = "<h1>404 Not Found</h1>";
 	}
@@ -59,7 +62,7 @@ void server::Response::buildHeader(){
 		case 404:
 			header += " Not Found\r\n";
 			break;
-		case 101:
+		case 101: //Turns out Firefox does not always use this
 			header += " Switching Protocols\r\n";
 			header += "Connection: Upgrade\r\n";
 			header += "Upgrade: h2c\r\n";
@@ -78,6 +81,7 @@ void server::Response::buildHeader(){
 	_responseHeader = header;
 }
 
+//Build a Header frame for HTTP\2
 void server::Response::buildHeader2(){
 	std::string header = ":status: " + std::to_string(_status);
 	header += "\r\n:version: HTTP/2.0";
@@ -88,6 +92,7 @@ void server::Response::buildHeader2(){
 	_responseHeader = header;
 }
 
+//Build an HTTP\2 frame header and convert frame to bytes
 char* server::Response::buildFrame(int type, int flags){
 	int length;
 	int stream = 1;

@@ -3,34 +3,18 @@
 server::Request::Request(){}
 
 server::Request::Request(const char* msg, int size){
-	//convert char array to string
+	//convert char array to C++ string (because it's easier)
 	std::string str(msg, size);
 	//break header into lines
-	//vector<char*> lines = new vector<char*>;
-	std::vector<std::string> lines/* = new vector<std::string>*/;
+	std::vector<std::string> lines;
 	std::istringstream input(str);
 	std::string line;
 	while(std::getline(input, line)){
 		line.erase(std::remove(line.begin(), line.end(), '\r'),
-				line.end());
+				line.end()); //Remove carriage returns
 		lines.push_back(line);
 	}
-	/*const char* current = msg;
-	while(current){
-		const char* next = strchr(current, '\r');
-		int currentLen;
-		if(next){
-			currentLen = next - current;
-		}else{
-			//figure something out
-			currentLen = size - current;
-			//currentLen = 0;
-			//break;
-		}
-	}*/
-	//decode into the fields
-	//std::string requestLine = lines[0];
-	//TODO: Make sure carriage return is discarded if present
+	//divide first line into needed data
 	std::vector<std::string> words;
 	if(!lines.empty()){
 		std::istringstream requestLine(lines[0]);

@@ -2,8 +2,9 @@
 
 void server::OnNewClientConnected(server::Server* s, uint16_t fd){
 	std::cout << "New Connection" << std::endl;
-	char* requestBytes = new char[8192];
+	char* requestBytes = new char[8192]; //Max request size
 	int count = readBytes(fd, requestBytes, 8192);
+	//trace print request to terminal
 	for(int i = 0; i < count; i++){
 		std::cout << requestBytes[i];
 	}
@@ -11,11 +12,12 @@ void server::OnNewClientConnected(server::Server* s, uint16_t fd){
 	server::Response* res = new server::Response(req);
 	int responseSize = res->getBytesCount();
 	char* responseText = res->toBytes();
+	//trace print response to terminal
 	for(int i = 0; i < responseSize; i++){
 		std::cout << responseText[i];
 	}
 	count = sendBytes(fd, responseText, responseSize);
-	s->disconnect();
+	s->disconnect(); //End connection and wait for next request
 }
 
 int server::sendBytes(uint16_t fd, char *msg, int count){
