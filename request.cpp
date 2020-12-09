@@ -32,17 +32,19 @@ server::Request::Request(const char* msg, int size){
 	//std::string requestLine = lines[0];
 	//TODO: Make sure carriage return is discarded if present
 	std::vector<std::string> words;
-	std::istringstream requestLine(lines[0]);
-	std::string word;
-	while(std::getline(requestLine, word, ' ')){
-		words.push_back(word);
-	}
-	_method = words[0];
-	if(words.size() > 1){
-		_uri = words[1];
-	}
-	if(words.size() > 2){
-		_version = words[2];
+	if(!lines.empty()){
+		std::istringstream requestLine(lines[0]);
+		std::string word;
+		while(std::getline(requestLine, word, ' ')){
+			words.push_back(word);
+		}
+		_method = words[0];
+		if(words.size() > 1){
+			_uri = words[1];
+		}
+		if(words.size() > 2){
+			_version = words[2];
+		}
 	}
 }
 
